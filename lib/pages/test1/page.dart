@@ -27,26 +27,18 @@ class Test1Page extends StatelessWidget {
             physics: const BouncingScrollPhysics(
               parent: AlwaysScrollableScrollPhysics(),
             ),
+            itemCount: 0,
             itemBuilder: (context, i) {
               final movie = state.model.movies[i + 1];
-              return _Movie(movie: movie);
+              return _movie(movie: movie);
             },
           );
         },
       ),
     );
   }
-}
 
-class _Movie extends StatelessWidget {
-  final Movie movie;
-  const _Movie({
-    Key? key,
-    required this.movie,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
+  Widget _movie({required Movie movie}) {
     return FadeInLeft(
       duration: const Duration(milliseconds: 500),
       child: Container(

@@ -15,9 +15,8 @@ class HomePage extends StatelessWidget {
         padding: const EdgeInsets.all(16.0).copyWith(top: 0.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            _button(
-              context: context,
+          children: const [
+            _Button(
               title: 'Ir al Test',
               route: '/test',
             ),
@@ -26,12 +25,20 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _button({
-    required BuildContext context,
-    required String title,
-    required String route,
-  }) {
+class _Button extends StatelessWidget {
+  final String title;
+  final String route;
+
+  const _Button({
+    Key? key,
+    required this.title,
+    required this.route,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
     return Center(
       child: ElevatedButton(
         child: Row(
