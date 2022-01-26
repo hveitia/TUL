@@ -20,7 +20,7 @@ class Test1Bloc extends bloc.Bloc<Test1Event, Test1State> {
     try {
       repository.getMovies();
       emit(
-        LoadedState(state.model.copyWith()),
+        LoadingState(state.model.copyWith()),
       );
     } catch (_) {
       emit(ErrorState(state.model));
