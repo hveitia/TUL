@@ -18,10 +18,8 @@ class Test1Bloc extends bloc.Bloc<Test1Event, Test1State> {
     emit(LoadingState(state.model));
 
     try {
-      repository.getMovies();
-      emit(
-        LoadingState(state.model.copyWith()),
-      );
+      List<Movie> movies = await repository.getMovies();
+      emit(LoadedState(state.model.copyWith(movies: movies)));
     } catch (_) {
       emit(ErrorState(state.model));
     }

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tests/pages/home/page.dart';
+import 'package:tests/pages/test1/bloc/bloc.dart';
 import 'package:tests/pages/test1/page.dart';
+import 'package:tests/repository.dart';
 import 'package:tests/theme/colors.dart';
 
 void main() => runApp(const MyApp());
@@ -14,13 +17,19 @@ class MyApp extends StatelessWidget {
       '/': (_) => const HomePage(),
       '/test': (_) => const Test1Page(),
     };
-    return MaterialApp(
-      title: 'Material App',
-      initialRoute: '/',
-      routes: routes,
-      theme: Theme.of(context).copyWith(
-        primaryColor: AppColors.primary,
-        secondaryHeaderColor: AppColors.secondary,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<Test1Bloc>(create: ( _ ) => Test1Bloc(Repository()))
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Material App',
+        initialRoute: '/',
+        routes: routes,
+        theme: Theme.of(context).copyWith(
+          primaryColor: AppColors.primary,
+          secondaryHeaderColor: AppColors.secondary,
+        ),
       ),
     );
   }

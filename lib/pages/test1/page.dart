@@ -5,8 +5,24 @@ import 'package:tests/models/movie.dart';
 import 'package:tests/pages/test1/bloc/bloc.dart';
 import 'package:tests/theme/colors.dart';
 
-class Test1Page extends StatelessWidget {
+class Test1Page extends StatefulWidget {
   const Test1Page({Key? key}) : super(key: key);
+
+  @override
+  State<Test1Page> createState() => _Test1PageState();
+}
+
+class _Test1PageState extends State<Test1Page> {
+  @override
+  void initState() {
+    BlocProvider.of<Test1Bloc>(context, listen: false).add(const LoadEvent());
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,14 +38,13 @@ class Test1Page extends StatelessWidget {
               child: CircularProgressIndicator(),
             );
           }
-
           return ListView.builder(
             physics: const BouncingScrollPhysics(
               parent: AlwaysScrollableScrollPhysics(),
             ),
-            itemCount: 0,
+            itemCount: state.model.movies.length,
             itemBuilder: (context, i) {
-              final movie = state.model.movies[i + 1];
+              final movie = state.model.movies[i];
               return _movie(movie: movie);
             },
           );
@@ -39,6 +54,7 @@ class Test1Page extends StatelessWidget {
   }
 
   Widget _movie({required Movie movie}) {
+    final _screenSize = MediaQuery.of(context).size;
     return FadeInLeft(
       duration: const Duration(milliseconds: 500),
       child: Container(
@@ -74,15 +90,19 @@ class Test1Page extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 8.0),
-                Text(
-                  movie.title ?? '',
-                  style: const TextStyle(
-                    fontFamily: 'Inter',
-                    color: Colors.black,
-                    fontSize: 14.0,
-                    fontWeight: FontWeight.w600,
-                    fontStyle: FontStyle.normal,
-                    letterSpacing: -0.16,
+                SizedBox(
+                  height: 20,
+                  width: _screenSize.width *0.6,
+                  child: Text(
+                    movie.title ?? '',
+                    style: const TextStyle(
+                      fontFamily: 'Inter',
+                      color: Colors.black,
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.w600,
+                      fontStyle: FontStyle.normal,
+                      letterSpacing: -0.16,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 10.0),
@@ -100,18 +120,22 @@ class Test1Page extends StatelessWidget {
                 const SizedBox(height: 10.0),
                 _StarRating(rating: movie.raiting),
                 const SizedBox(height: 10.0),
-                Text(
-                  movie.overview ?? '',
-                  style: const TextStyle(
-                    fontFamily: 'Inter',
-                    color: Color(0xff272727),
-                    fontSize: 10,
-                    fontWeight: FontWeight.w400,
-                    fontStyle: FontStyle.normal,
-                    letterSpacing: -0.1,
+                SizedBox(
+                  height: 65,
+                  width: _screenSize.width *0.6,
+                  child: Text(
+                    movie.overview ?? '',
+                    style: const TextStyle(
+                      fontFamily: 'Inter',
+                      color: Color(0xff272727),
+                      fontSize: 10,
+                      fontWeight: FontWeight.w400,
+                      fontStyle: FontStyle.normal,
+                      letterSpacing: -0.1,
+                    ),
+                    maxLines: 5,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  maxLines: 5,
-                  overflow: TextOverflow.ellipsis,
                 ),
               ],
             ),
@@ -124,6 +148,7 @@ class Test1Page extends StatelessWidget {
 
 class _StarRating extends StatelessWidget {
   final int rating;
+
   const _StarRating({
     Key? key,
     this.rating = 0,

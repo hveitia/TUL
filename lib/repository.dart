@@ -20,6 +20,12 @@ class Repository {
 
     final response = await dio.get(url);
 
-    return response.data['results'] as List<Movie>;
+    List<Movie> result = [];
+
+    for(var i =0; i< response.data['results'].length; i++){
+      result.add(Movie.fromJson(response.data['results'][i]));
+    }
+
+    return result;
   }
 }
